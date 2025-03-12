@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deploy-3
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: demo-2
+  template:
+    metadata:
+      labels:
+        app: demo-2
+    spec:
+      containers:
+      - image: nginx:latest
+        name: nginx
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-svc-3
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    nodePort: 30010
+    targetPort: 80
+  selector:
+    app: demo-2
